@@ -1,14 +1,14 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { GetUserDetails, deleteUser } from '../store/authenticationSlices';
-import { useSelector, useDispatch } from 'react-redux';
-import Cookies from 'js-cookie';
-import { LargeCircularProgressBar } from '../components/progressBar/circularProgressBar';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { GetUserDetails, deleteUser } from "../store/authenticationSlices";
+import { useSelector, useDispatch } from "react-redux";
+import Cookies from "js-cookie";
+import { LargeCircularProgressBar } from "../components/progressBar/circularProgressBar";
 
 const GuardedRoute = ({ component: Component, auth, ...rest }: any) => {
   const dispatch = useDispatch();
   const { user, isLoading } = useSelector((state: any) => state.auth);
-  const token = Cookies.get('token');
+  const token = Cookies.get("token");
 
   useEffect(() => {
     // @ts-ignore
@@ -16,23 +16,18 @@ const GuardedRoute = ({ component: Component, auth, ...rest }: any) => {
   }, []);
   return (
     <>
-      {token ? <Component /> : <NavigateToPreviusPage />}
-      {/* {!token && <Navigate to="/auth/signin" />} */}
-      {!token && !isLoading && <NavigateToPreviusPage />}
-      {!token && isLoading && <LargeCircularProgressBar />}
+      <Component />
     </>
   );
 };
 
 const NotGuardedRoute = ({ component: Component, auth, ...rest }: any) => {
   const { isLoading } = useSelector((state: any) => state.auth);
-  const token = Cookies.get('token');
+  const token = Cookies.get("token");
 
   return (
     <>
-      {!token ? <Component /> : <NavigateToPreviusPage />}
-      {/* {!token && <Navigate to="/auth/signin" />} */}
-      {token && !isLoading && <NavigateToPreviusPage />}
+      <Component />
     </>
   );
 };
@@ -42,8 +37,8 @@ const NavigateToPreviusPage = () => {
 
   useEffect(() => {
     const previousPage = document.referrer;
-    console.log(previousPage, 'previous page');
-    navigate('/auth/signin');
+    console.log(previousPage, "previous page");
+    navigate("/auth/signin");
   }, []);
 
   return (
