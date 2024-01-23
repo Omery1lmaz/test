@@ -1,50 +1,50 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import SignIn from './pages/Authentication/SignIn';
-import SignUp from './pages/Authentication/SignUp';
-import Calendar from './pages/Calendar';
-import ECommerce from './pages/Dashboard/ECommerce';
-import FormElements from './pages/Form/FormElements';
-import FormLayout from './pages/Form/FormLayout';
-import Profile from './pages/Admin/Profile/Profile';
-import Tables from './pages/Tables';
-import GuardedRoute from './services/authGuard';
-import AddProduct from './pages/Admin/ProductPages/AddProduct';
-import AddCategory from './pages/Admin/CategoryPages/AddCategory';
-import AddWaiter from './pages/Admin/WaiterPages/AddWaiter';
-import EditCategory from './pages/Admin/CategoryPages/EditCategory';
-import EditProduct from './pages/Admin/ProductPages/EditProduct';
-import EditWaiter from './pages/Admin/WaiterPages/EditWaiter';
-import OrderList from './pages/Admin/OrderPages/OrderList';
-import ProductList from './pages/Admin/ProductPages/ProductList';
-import CategoryList from './pages/Admin/CategoryPages/CategoryList';
-import WaiterList from './pages/Admin/WaiterPages/WaiterList';
-import CategoryCostList from './pages/Admin/CostList/category/CategoryCostList';
-import ProductCostList from './pages/Admin/CostList/product/ProductCostList';
-import Buttons from './pages/UiElements/Buttons';
-import { ToastContainer } from 'react-toastify';
-import { successNotification } from './services/notificationHelper';
-import { useDispatch, useSelector } from 'react-redux';
-import VariationList from './pages/Admin/VariationPages/VariationList';
-import AddVarition from './pages/Admin/VariationPages/AddVariation';
-import { addOrder } from './store/productSlices';
-import EditPromosyon from './pages/Admin/PromosyonPages/EditPromosyon';
-import AddPromosyon from './pages/Admin/PromosyonPages/AddPromosyon';
-import PromosyonList from './pages/Admin/PromosyonPages/PromosyonList';
-import Printer from './pages/Admin/Printer/Printer';
-import ActiveOrders from './pages/Admin/OrderPages/ActiveOrders';
-import OrderRecords from './pages/Admin/Invoices/OrderRecords';
-import Invoices from './pages/Admin/Invoices/Invoices';
-import NewOptionList from './pages/Admin/VariationPages/NewOptionPages/VariationList';
-import NewAddOption from './pages/Admin/VariationPages/NewOptionPages/AddVariation';
-import EditOption from './pages/Admin/VariationPages/NewOptionPages/EditOption';
-import NewAddProduct from './pages/Admin/ProductPages/NewProductPages/AddProduct';
-import { Routes, Route, BrowserRouter, Navigate } from 'react-router-dom';
+import SignIn from "./pages/Authentication/SignIn";
+import SignUp from "./pages/Authentication/SignUp";
+import Calendar from "./pages/Calendar";
+import ECommerce from "./pages/Dashboard/ECommerce";
+import FormElements from "./pages/Form/FormElements";
+import FormLayout from "./pages/Form/FormLayout";
+import Profile from "./pages/Admin/Profile/Profile";
+import Tables from "./pages/Tables";
+import GuardedRoute from "./services/authGuard";
+import AddProduct from "./pages/Admin/ProductPages/AddProduct";
+import AddCategory from "./pages/Admin/CategoryPages/AddCategory";
+import AddWaiter from "./pages/Admin/WaiterPages/AddWaiter";
+import EditCategory from "./pages/Admin/CategoryPages/EditCategory";
+import EditProduct from "./pages/Admin/ProductPages/EditProduct";
+import EditWaiter from "./pages/Admin/WaiterPages/EditWaiter";
+import OrderList from "./pages/Admin/OrderPages/OrderList";
+import ProductList from "./pages/Admin/ProductPages/ProductList";
+import CategoryList from "./pages/Admin/CategoryPages/CategoryList";
+import WaiterList from "./pages/Admin/WaiterPages/WaiterList";
+import CategoryCostList from "./pages/Admin/CostList/category/CategoryCostList";
+import ProductCostList from "./pages/Admin/CostList/product/ProductCostList";
+import Buttons from "./pages/UiElements/Buttons";
+import { ToastContainer } from "react-toastify";
+import { successNotification } from "./services/notificationHelper";
+import { useDispatch, useSelector } from "react-redux";
+import VariationList from "./pages/Admin/VariationPages/VariationList";
+import AddVarition from "./pages/Admin/VariationPages/AddVariation";
+import { addOrder } from "./store/productSlices";
+import EditPromosyon from "./pages/Admin/PromosyonPages/EditPromosyon";
+import AddPromosyon from "./pages/Admin/PromosyonPages/AddPromosyon";
+import PromosyonList from "./pages/Admin/PromosyonPages/PromosyonList";
+import Printer from "./pages/Admin/Printer/Printer";
+import ActiveOrders from "./pages/Admin/OrderPages/ActiveOrders";
+import OrderRecords from "./pages/Admin/Invoices/OrderRecords";
+import Invoices from "./pages/Admin/Invoices/Invoices";
+import NewOptionList from "./pages/Admin/VariationPages/NewOptionPages/VariationList";
+import NewAddOption from "./pages/Admin/VariationPages/NewOptionPages/AddVariation";
+import EditOption from "./pages/Admin/VariationPages/NewOptionPages/EditOption";
+import NewAddProduct from "./pages/Admin/ProductPages/NewProductPages/AddProduct";
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const preloader = document.getElementById('preloader');
+  const preloader = document.getElementById("preloader");
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     // @ts-expect-error
     (state) => state.auth
@@ -52,7 +52,7 @@ function App() {
 
   if (preloader) {
     setTimeout(() => {
-      preloader.style.display = 'none';
+      preloader.style.display = "none";
       setLoading(false);
     }, 2000);
   }
@@ -112,7 +112,7 @@ function App() {
         />
         <Route
           path="/edit-category"
-          element={<Navigate to={'/edit-category/6453bbc9a10aca4239b45a0e'} />}
+          element={<Navigate to={"/edit-category/6453bbc9a10aca4239b45a0e"} />}
         />
         {/* Start of Promosyon */}
         <Route
@@ -144,7 +144,7 @@ function App() {
         />
         <Route
           path="/edit-waiter"
-          element={<Navigate to={'/edit-waiter/643613b2c03fd3c3ea464c88'} />}
+          element={<Navigate to={"/edit-waiter/643613b2c03fd3c3ea464c88"} />}
         />
         <Route
           path="/category-cost-list"
@@ -159,7 +159,7 @@ function App() {
           path="/order-list/:id"
           element={<GuardedRoute component={OrderList} />}
         />
-        <Route path="/order-list" element={<Navigate to={'/order-list/1'} />} />
+        <Route path="/order-list" element={<Navigate to={"/order-list/1"} />} />
         <Route
           path="/user-list/:id"
           element={<GuardedRoute component={ProductList} />}
@@ -173,7 +173,7 @@ function App() {
           element={<GuardedRoute component={WaiterList} />}
         />
 
-        <Route path="/user-list" element={<Navigate to={'/user-list/1'} />} />
+        <Route path="/user-list" element={<Navigate to={"/user-list/1"} />} />
         <Route
           path="/edit-promotion/:id"
           element={<GuardedRoute component={EditOption} />}
@@ -192,8 +192,6 @@ function App() {
         <Route path="/forms/form-elements" element={<FormElements />} />
         <Route path="/forms/form-layout" element={<FormLayout />} />
         <Route path="/tables" element={<Tables />} />
-        <Route path="/auth/signin" element={<SignIn />} />
-        <Route path="/auth/signup" element={<SignUp />} />
       </Routes>
     </>
   );
