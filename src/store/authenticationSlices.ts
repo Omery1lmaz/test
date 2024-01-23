@@ -1,24 +1,24 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import authService from './helper/authHelper';
-import State from '../types/AuthSlice';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import Cookies from "js-cookie";
+import authService from "./helper/authHelper";
+import State from "../types/AuthSlice";
 import {
   errorNotification,
   successNotification,
-} from '../services/notificationHelper';
-import { push } from 'redux-first-history';
+} from "../services/notificationHelper";
+import { push } from "redux-first-history";
 
-const userString = localStorage.getItem('user');
+const userString = localStorage.getItem("user");
 const user = userString !== null ? JSON.parse(userString) : null;
 
 export const sellerWorkingStatus = createAsyncThunk(
-  'updateSellerWorkingStatus',
+  "updateSellerWorkingStatus",
   async (isWorking, thunkAPI) => {
     try {
       const response = await authService.sellerWorkingStatus(isWorking);
       thunkAPI.dispatch(changeSellerWorkingStatus(response));
-      successNotification('Mağaza durumunuz başarıyla güncellendi');
+      successNotification("Mağaza durumunuz başarıyla güncellendi");
       return response;
     } catch (error: any) {
       const message =
@@ -27,13 +27,13 @@ export const sellerWorkingStatus = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
+
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
 export const createOffier = createAsyncThunk(
-  'createOfficer',
+  "createOfficer",
   async ({ formData }: any, thunkAPI) => {
     try {
       for (const pair of formData.entries()) {
@@ -41,8 +41,8 @@ export const createOffier = createAsyncThunk(
       }
 
       const response = await authService.createOfficer({ formData });
-      successNotification('Officer başarıyla eklendi');
-      thunkAPI.dispatch(push('/'));
+      successNotification("Officer başarıyla eklendi");
+      thunkAPI.dispatch(push("/"));
       // Navigate to a specific route after successful creation
 
       return response;
@@ -53,7 +53,7 @@ export const createOffier = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
+
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
@@ -61,14 +61,14 @@ export const createOffier = createAsyncThunk(
 
 // Login User
 export const loginUser = createAsyncThunk(
-  'loginUser',
+  "loginUser",
   async (user: { email: string; password: string }, thunkAPI) => {
-    console.log('user', user);
+    console.log("user", user);
     try {
       const response = await authService.login(user);
-      console.log('response', response);
+      console.log("response", response);
       localStorage.setItem(
-        'user',
+        "user",
         JSON.stringify({
           name: response.name,
           email: response.email,
@@ -77,10 +77,10 @@ export const loginUser = createAsyncThunk(
           token: response.session.token,
         })
       );
-      localStorage.setItem('token', JSON.stringify(response.session.token));
-      Cookies.set('token', response.session.token);
+      localStorage.setItem("token", JSON.stringify(response.session.token));
+      Cookies.set("token", response.session.token);
 
-      successNotification('Giriş Başarılı');
+      successNotification("Giriş Başarılı");
       return response;
     } catch (error: any) {
       const message =
@@ -89,16 +89,15 @@ export const loginUser = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
 
 export const getsellerInfo = createAsyncThunk(
-  'sellerInfo',
+  "sellerInfo",
   async (thunkAPI: any) => {
-    console.log('user', user);
+    console.log("user", user);
     try {
       const response = await authService.getInfoHelper();
       return response;
@@ -115,9 +114,9 @@ export const getsellerInfo = createAsyncThunk(
 );
 
 export const getSellerInfoById = createAsyncThunk(
-  '/getSellerInfoById',
+  "/getSellerInfoById",
   async (id, thunkAPI: any) => {
-    console.log(id, 'id getsellerinfo');
+    console.log(id, "id getsellerinfo");
     try {
       const response = await authService.getSellerInfoHelper(id);
       return response;
@@ -133,11 +132,11 @@ export const getSellerInfoById = createAsyncThunk(
 );
 
 export const updateSellerProfile = createAsyncThunk(
-  '/updateSellerProfile',
+  "/updateSellerProfile",
   async (profile: any, thunkAPI: any) => {
     try {
       const response = await authService.updateUserProfileHelper(profile);
-      successNotification('Profil başarıyla güncellendi');
+      successNotification("Profil başarıyla güncellendi");
       return response;
     } catch (error: any) {
       const message =
@@ -152,13 +151,13 @@ export const updateSellerProfile = createAsyncThunk(
   }
 );
 export const updateSellerImage = createAsyncThunk(
-  '/updateSellerImage',
+  "/updateSellerImage",
   async ({ formData }: any, thunkAPI: any) => {
     try {
       const response = await authService.updateUserImageHelper({
         formData,
       });
-      successNotification('Resim başarıyla güncellendi');
+      successNotification("Resim başarıyla güncellendi");
       return response;
     } catch (error: any) {
       const message =
@@ -167,14 +166,13 @@ export const updateSellerImage = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const RegisterUser = createAsyncThunk(
-  'registerUser',
+  "registerUser",
   async (user: any, thunkAPI: any) => {
     try {
       const response = await authService.register(user);
@@ -187,14 +185,13 @@ export const RegisterUser = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
 
 export const VerifyEmailUser = createAsyncThunk(
-  'VerifyEmailUser',
+  "VerifyEmailUser",
   async ({ id, token }: any, thunkAPI: any) => {
     try {
       return await authService.VerifyUser({ id, token });
@@ -211,7 +208,7 @@ export const VerifyEmailUser = createAsyncThunk(
 );
 
 export const updatePassword = createAsyncThunk(
-  'updatePassword',
+  "updatePassword",
   async (
     { oldPassword, newPassword, newPasswordConfirm }: any,
     thunkAPI: any
@@ -222,7 +219,7 @@ export const updatePassword = createAsyncThunk(
         newPassword,
         newPasswordConfirm,
       });
-      successNotification('Şifre Başarıyla güncellendi');
+      successNotification("Şifre Başarıyla güncellendi");
     } catch (error: any) {
       const message =
         (error.response &&
@@ -230,19 +227,18 @@ export const updatePassword = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const ResetPasswordLink = createAsyncThunk(
-  'post/resetPasswordLink',
+  "post/resetPasswordLink",
   async (email: any, thunkAPI: any) => {
     try {
       console.log(email);
       const v = await authService.resetPasswordLink(email);
-      successNotification('Emailinizi kontrol ediniz');
+      successNotification("Emailinizi kontrol ediniz");
       return v;
     } catch (error: any) {
       const message =
@@ -257,7 +253,7 @@ export const ResetPasswordLink = createAsyncThunk(
 );
 
 export const resetPasswordVerify = createAsyncThunk(
-  'post/resetPasswordVerify',
+  "post/resetPasswordVerify",
   async ({ password, id, token }: any, thunkAPI: any) => {
     try {
       return await authService.resetPasswordVerify({ password, id, token });
@@ -274,10 +270,10 @@ export const resetPasswordVerify = createAsyncThunk(
 );
 
 export const GetUserDetails = createAsyncThunk(
-  'get/userDetails',
+  "get/userDetails",
   async (thunkAPI: any) => {
     try {
-      console.info('info');
+      console.info("info");
       return await authService.GetUserDetails();
     } catch (error: any) {
       const message =
@@ -286,7 +282,7 @@ export const GetUserDetails = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      console.error('get user details failed');
+      console.error("get user details failed");
       thunkAPI.dispatch(deleteUser());
       return thunkAPI.rejectWithValue(message);
     }
@@ -294,7 +290,7 @@ export const GetUserDetails = createAsyncThunk(
 );
 
 export const getSellers = createAsyncThunk(
-  'get/getSellers',
+  "get/getSellers",
   async (thunkAPI: any) => {
     try {
       return await authService.GetSellers();
@@ -316,7 +312,7 @@ export const initialState: State = {
   isError: false,
   isSuccess: false,
   isLoading: false,
-  message: '',
+  message: "",
   sellers: null,
   sellerInfo: {},
   sellerDetails: {},
@@ -324,18 +320,18 @@ export const initialState: State = {
 
 // Then, handle actions in your reducers:
 const authSlice = createSlice({
-  name: 'users',
+  name: "users",
   initialState,
   reducers: {
     deleteUser(state: State) {
-      console.log('deleteUser');
-      Cookies.remove('token');
-      localStorage.removeItem('user');
+      console.log("deleteUser");
+      Cookies.remove("token");
+      localStorage.removeItem("user");
       state.user = null;
       state.userDetail = null;
     },
     changeSellerWorkingStatus(state: State, action) {
-      console.log('action', action);
+      console.log("action", action);
       const v = { ...user, isWorking: action.payload };
       state.user = v;
     },
@@ -384,7 +380,7 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(GetUserDetails.fulfilled, (state, action) => {
-        localStorage.setItem('user', JSON.stringify(action.payload));
+        localStorage.setItem("user", JSON.stringify(action.payload));
         state.user = action.payload;
         state.isLoading = false;
       })
@@ -394,8 +390,8 @@ const authSlice = createSlice({
         state.user = null;
         state.isLoading = false;
         state.message = action.payload as string;
-        Cookies.remove('connect.sid');
-        localStorage.removeItem('user');
+        Cookies.remove("connect.sid");
+        localStorage.removeItem("user");
         state.userDetail = null;
       })
       .addCase(GetUserDetails.pending, (state, action) => {

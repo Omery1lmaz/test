@@ -41,7 +41,7 @@ const createOfficer = async ({ formData }: any) => {
   }
 
   const response = await axios.post(
-    'http://localhost:3003/api/officer',
+    'https://vml.onrender.com/api/officer',
     formData
   );
   console.log('response data ', response.data);

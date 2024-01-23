@@ -1,9 +1,9 @@
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import axios from "axios";
+import Cookies from "js-cookie";
 const defaultOptions = {
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 };
 
@@ -12,21 +12,21 @@ let axiosInstance = axios.create(defaultOptions);
 
 // Set the AUTH token for any request
 axiosInstance.interceptors.request.use(function (config) {
-  const token = Cookies.get('token');
-  config.headers.Authorizgetation = token ? `Bearer ${token}` : '';
+  const token = Cookies.get("token");
+  config.headers.Authorizgetation = token ? `Bearer ${token}` : "";
   return config;
 });
 
 const getCategoriesHelper = async () => {
   const response = await axiosInstance.get(
-    'http://localhost:4000/api/categories/categories'
+    "http://localhost:4000/api/categories/categories"
   );
 
   return response.data;
 };
 const getOrderBySeller = async () => {
   const response = await axiosInstance.get(
-    'http://localhost:4000/api/orders/order/seller',
+    "http://localhost:4000/api/orders/order/seller",
     { withCredentials: true }
   );
   const arrayfororders = [...response.data];
@@ -39,7 +39,7 @@ const getOrderBySeller = async () => {
 
 const getAdminDashboardInf = async ({ query }: any) => {
   const res = await axiosInstance.post(
-    'http://localhost:4000/api/admin/adminDashboard',
+    "http://localhost:4000/api/admin/adminDashboard",
     { query: query },
     {
       withCredentials: true,
@@ -81,7 +81,7 @@ const createOrder = async ({
   tip,
 }: any) => {
   const response: any = axiosInstance.post(
-    'http://localhost:4000/api/orders/order',
+    "http://localhost:4000/api/orders/order",
     {
       isTakeAway,
       totalPrice,
@@ -138,7 +138,7 @@ const getCategoryByIdHelper = async ({ id }: any) => {
   return response.data;
 };
 const updateProductsImage = async ({ id, formData }: any) => {
-  const token = Cookies.get('token');
+  const token = Cookies.get("token");
   const response: any = await axios.post(
     `http://localhost:4000/api/products/image/${id}`,
     formData,
@@ -180,7 +180,7 @@ const getPromotionsBySeller = async () => {
 
 const addCategoriesHelper = async (category: any) => {
   const response: any = await axiosInstance.post(
-    'http://localhost:4000/api/categories/add-categories',
+    "http://localhost:4000/api/categories/add-categories",
     category,
     { withCredentials: true }
   );
@@ -326,7 +326,7 @@ const getOfficerHelper = async () => {
 };
 const deleteOfficerHelper = async (id: string) => {
   const response = await axiosInstance.delete(
-    `http://localhost:3003/api/officer/` + id,
+    `https://vml.onrender.com/api/officer/` + id,
     {
       withCredentials: true,
     }

@@ -73,7 +73,6 @@ export const getAdminDashBoardInf = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -262,7 +261,6 @@ export const getProduct = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -285,7 +283,6 @@ export const updateProductsImage = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -629,7 +626,6 @@ export const newAddProduct = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -672,7 +668,6 @@ export const updateProductP = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }

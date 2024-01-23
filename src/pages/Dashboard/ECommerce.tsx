@@ -1,34 +1,34 @@
-import { useDispatch, useSelector } from 'react-redux';
-import CardOne from '../../components/CardOne.tsx';
+import { useDispatch, useSelector } from "react-redux";
+import CardOne from "../../components/CardOne.tsx";
 import {
   DashboardCategoriesTable,
   DashboardProductsTable,
   DashboardWaitersTable,
-} from '../../components/TableOne.tsx';
-import DefaultLayout from '../../layout/DefaultLayout.tsx';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+} from "../../components/TableOne.tsx";
+import DefaultLayout from "../../layout/DefaultLayout.tsx";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   getAdminDashBoardInf,
   getOfficer,
   getUsers,
-} from '../../store/productSlices.ts';
-import { BanknotesIcon } from '@heroicons/react/24/outline';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import { Typography, getDialogContentTextUtilityClass } from '@mui/material';
-import { getWaiters } from '../../store/waiterSlice.ts';
-import { LinearIndeterminate } from '../../components/progressBar/linearProgressBar.tsx';
+} from "../../store/productSlices.ts";
+import { BanknotesIcon } from "@heroicons/react/24/outline";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import { Typography, getDialogContentTextUtilityClass } from "@mui/material";
+import { getWaiters } from "../../store/waiterSlice.ts";
+import { LinearIndeterminate } from "../../components/progressBar/linearProgressBar.tsx";
 
 const style = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 600,
   height: 400,
-  bgcolor: 'background.paper',
-  borderRadius: '15px',
+  bgcolor: "background.paper",
+  borderRadius: "15px",
   boxShadow: 24,
   pt: 2,
   px: 4,
@@ -59,20 +59,20 @@ firstDayOfMonth.setHours(0, 0, 0, 0);
 
 const filterDays = [
   {
-    title: 'Bugün',
+    title: "Bugün",
     date: {
       $gte: new Date(Date.now()),
     },
   },
   {
-    title: 'Dün',
+    title: "Dün",
     date: {
       $gte: yesterday,
       $lt: new Date(),
     },
   },
   {
-    title: 'Bu Hafta',
+    title: "Bu Hafta",
     date: {
       $gte: firstDayOfMonth,
     },
@@ -80,8 +80,6 @@ const filterDays = [
 ];
 const ECommerce = () => {
   const dispatch = useDispatch();
-  // @ts-expect-error
-  const { users } = useSelector((state) => state.product);
 
   const getData = () => {
     // @ts-expect-error
