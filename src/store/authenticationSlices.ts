@@ -27,7 +27,6 @@ export const sellerWorkingStatus = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
@@ -53,7 +52,7 @@ export const createOffier = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-
+      errorNotification("Officer oluşturulurken hata oluştu");
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
@@ -227,6 +226,7 @@ export const updatePassword = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
+      cation(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -338,6 +338,18 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(createOffier.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(createOffier.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.isLoading = false;
+        state.user = null;
+      })
+      .addCase(createOffier.pending, (state, action) => {
+        state.isLoading = true;
+      })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.isLoading = false;

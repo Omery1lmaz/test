@@ -1,12 +1,12 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import waiterService from './helper/waiterHelper';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import waiterService from "./helper/waiterHelper";
 import {
   errorNotification,
   successNotification,
-} from '../services/notificationHelper';
+} from "../services/notificationHelper";
 // GET WAITER
 export const getWaiter = createAsyncThunk(
-  '/getWaiter',
+  "/getWaiter",
   async ({ id }: any, thunkAPI) => {
     try {
       return await waiterService.getWaiter(id);
@@ -17,12 +17,11 @@ export const getWaiter = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
     }
   }
 );
 // GET WAITERS
-export const getWaiters = createAsyncThunk('/getWaiters', async (thunkAPI) => {
+export const getWaiters = createAsyncThunk("/getWaiters", async (thunkAPI) => {
   try {
     return await waiterService.getWaitersHelper();
   } catch (error: any) {
@@ -36,7 +35,7 @@ export const getWaiters = createAsyncThunk('/getWaiters', async (thunkAPI) => {
 
 // GET WAITERS BY SELLER ID
 export const getWaitersBySellerId = createAsyncThunk(
-  '/getWaitersBySellerId',
+  "/getWaitersBySellerId",
   async ({ id }: any, thunkAPI) => {
     try {
       return await waiterService.getWaitersBySellerIdHelper(id);
@@ -47,19 +46,18 @@ export const getWaitersBySellerId = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
     }
   }
 );
 
 // ADD WAITER
 export const addWaiter = createAsyncThunk(
-  '/addWaiter',
+  "/addWaiter",
   async ({ waiter }: any, thunkAPI) => {
     console.log(waiter);
     try {
       const v = await waiterService.addWaiterHelper(waiter);
-      successNotification('Garson Başarıyla Güncellendi');
+      successNotification("Garson Başarıyla Güncellendi");
       return v;
     } catch (error: any) {
       const message =
@@ -68,18 +66,17 @@ export const addWaiter = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
     }
   }
 );
 
 // UPDATE WAITER
 export const updateWaiter = createAsyncThunk(
-  '/updateWaiter',
+  "/updateWaiter",
   async ({ waiter }: any, thunkAPI) => {
     try {
       const v: any = await waiterService.updateWaiterHelper(waiter);
-      successNotification('Garson Başarıyla Güncellendi');
+      successNotification("Garson Başarıyla Güncellendi");
       return v;
     } catch (error: any) {
       const message =
@@ -88,18 +85,17 @@ export const updateWaiter = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       console.log(error);
     }
   }
 );
 // DELETE WAITER
 export const deleteWaiter = createAsyncThunk(
-  '/deleteWaiter',
+  "/deleteWaiter",
   async ({ id }: any, thunkAPI) => {
     try {
       const v = await waiterService.deleteWaiterHelper(id);
-      successNotification('Garson Başarıyla Silindi');
+      successNotification("Garson Başarıyla Silindi");
       return id;
     } catch (error: any) {
       const message =
@@ -108,7 +104,6 @@ export const deleteWaiter = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       console.log(error);
     }
   }
@@ -125,7 +120,7 @@ const initialState = {
 // Then, handle actions in your reducers:
 
 const waiterSlice = createSlice({
-  name: 'users',
+  name: "users",
   initialState,
   reducers: {},
 
@@ -177,7 +172,7 @@ const waiterSlice = createSlice({
       // GET WAITERS BY SELLER ID
       .addCase(getWaitersBySellerId.fulfilled, (state, action) => {
         state.isLoadingW = false;
-        console.log(action.payload, 'waiters action payload');
+        console.log(action.payload, "waiters action payload");
         state.waiters = action.payload;
       })
       .addCase(getWaitersBySellerId.rejected, (state, action) => {

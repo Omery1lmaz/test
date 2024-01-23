@@ -19,7 +19,6 @@ export const addPromotion = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -38,7 +37,6 @@ export const insertOption = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -57,7 +55,6 @@ export const putOption = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -77,7 +74,6 @@ export const getOptionBySeller = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
@@ -97,7 +93,6 @@ export const getOptionsBySeller = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(message);
       return thunkAPI.rejectWithValue(message);
     }
   }

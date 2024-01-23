@@ -1,20 +1,20 @@
-import { useEffect, useState } from 'react';
-import DefaultLayout from '../../../../layout/DefaultLayout';
-import Breadcrumb from '../../../../components/Breadcrumb';
-import Multiselect from 'multiselect-react-dropdown';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from "react";
+import DefaultLayout from "../../../../layout/DefaultLayout";
+import Breadcrumb from "../../../../components/Breadcrumb";
+import Multiselect from "multiselect-react-dropdown";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
 import {
   addProduct,
   getCatsBySeller,
   getProductsBySellerLimit,
   getUsers,
   newAddProduct,
-} from '../../../../store/productSlices';
-import { getOptionsBySeller } from '../../../../store/promotionSlices';
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { createOffier } from '../../../../store/authenticationSlices';
+} from "../../../../store/productSlices";
+import { getOptionsBySeller } from "../../../../store/promotionSlices";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { createOffier } from "../../../../store/authenticationSlices";
 
 type OptionCategory = {
   name: string;
@@ -26,11 +26,13 @@ type OptionCategory = {
 const NewAddProduct = () => {
   const dispatch = useDispatch();
   // @ts-expect-error
-  const { sellerCategories, isLoadingP, sellerProducts } = useSelector(
-    (state: any) => {
-      return state.product;
-    }
-  );
+  const { sellerCategories, sellerProducts } = useSelector((state: any) => {
+    return state.product;
+  });
+  const { isLoading } = useSelector((state: any) => {
+    return state.auth;
+  });
+
   const formData = new FormData();
 
   const { options, promotions } = useSelector((state: any) => state.promotion);
@@ -47,12 +49,12 @@ const NewAddProduct = () => {
     setinputList([
       ...inputList,
       {
-        name: '',
+        name: "",
         minCount: 1,
         maxCount: 1,
         options: [
           {
-            name: '',
+            name: "",
             price: 1,
             priceNoDiscount: 1,
           },
@@ -64,7 +66,7 @@ const NewAddProduct = () => {
   const handleAddClickInputListProduct = (i: number) => {
     const deepCopyArray = [...inputList];
     deepCopyArray[i].options.push({
-      name: '',
+      name: "",
       price: 1,
       priceNoDiscount: 1,
     });
@@ -75,7 +77,7 @@ const NewAddProduct = () => {
     const list = [...inputList];
     list[i].options.splice(z, 1);
     setinputList([...list]);
-    console.log('first');
+    console.log("first");
   };
   const handleremoveOptionCategory = (i: any) => {
     const list = [...inputList];
@@ -119,23 +121,27 @@ const NewAddProduct = () => {
 
   const appendDataToFormData = (data) => {
     const formData = new FormData();
-    formData.append('test', data);
-    console.log('affasdnanskjd');
+    formData.append("test", data);
+    console.log("affasdnanskjd");
     for (var key of formData.entries()) {
-      console.log(JSON.stringify(key[0]) + ', ' + JSON.stringify(key[1]));
+      console.log(JSON.stringify(key[0]) + ", " + JSON.stringify(key[1]));
     }
   };
 
   const handleFileChange = (event: any) => {
     setSelectedFile(event.target.files[0]);
-    console.log('selected file', event.target.files[0]);
+    console.log("selected file", event.target.files[0]);
     appendDataToFormData(selectedFile);
   };
 
   const [officer, setOfficer] = useState({
-    name: '',
+    name: "",
     gender: false,
   });
+
+  useEffect(() => {
+    console.log(isLoading, "is loading");
+  }, [isLoading]);
 
   useEffect(() => {
     if (selectedFile) {
@@ -144,20 +150,20 @@ const NewAddProduct = () => {
   }, [selectedFile]);
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="New Add Product" />
+      <Breadcrumb pageName="New Add Officer" />
       <Formik
         initialValues={{
-          Name: '',
+          Name: "",
           gender: false,
         }}
         onSubmit={(values, { resetForm }) => {
           const { Name, gender } = values;
-          console.log(gender, 'gender');
+          console.log(gender, "gender");
           const genderString = gender ? true : false;
 
-          formData.append('image', image as any);
+          formData.append("image", image as any);
           formData.append(
-            'officer',
+            "officer",
             JSON.stringify({
               name: Name,
               gender: genderString,
@@ -209,20 +215,20 @@ const NewAddProduct = () => {
                         // @ts-ignore
                         value={formik.values.gender}
                         onChange={(e: any) => {
-                          formik.setFieldValue('gender', e.target.value);
+                          formik.setFieldValue("gender", e.target.value);
                           const genderString = formik.values.gender
-                            ? 'male'
-                            : 'female';
+                            ? "male"
+                            : "female";
 
                           console.log(`gender: ${genderString}`);
                         }}
                         onBlur={formik.handleBlur}
                         className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent p-2 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
                       >
-                        <option key={'female'} value={false}>
+                        <option key={"female"} value={false}>
                           Kadın
                         </option>
-                        <option key={'male'} value={true}>
+                        <option key={"male"} value={true}>
                           Erkek
                         </option>
                       </select>
@@ -247,7 +253,7 @@ const NewAddProduct = () => {
                       onChange={(e) => {
                         // @ts-expect-error
                         setImage(e.target.files[0] as File);
-                        console.log(image, 'image ');
+                        console.log(image, "image ");
                         formik.handleChange(e);
                       }}
                     />
@@ -448,7 +454,11 @@ const NewAddProduct = () => {
                   type="submit"
                   className="my-3 flex w-full justify-center rounded bg-primary p-3 font-medium text-gray"
                 >
-                  Add Product
+                  {isLoading ? (
+                    <span>Yükleniyor...</span>
+                  ) : (
+                    <span>Add Product</span>
+                  )}
                 </button>
               </div>
             </form>

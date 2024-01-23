@@ -1,18 +1,18 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-import authService from './helper/authHelper';
-import productService from './helper/productHelper';
-import { useNavigate } from 'react-router-dom';
-import env from '../env';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import authService from "./helper/authHelper";
+import productService from "./helper/productHelper";
+import { useNavigate } from "react-router-dom";
+import env from "../env";
 import {
   errorNotification,
   successNotification,
-} from '../services/notificationHelper';
+} from "../services/notificationHelper";
 function groupOrdersByDate(orderRecords) {
   const groupedOrders = {};
 
   orderRecords.forEach((order) => {
-    const date = new Date(order.date).toISOString().split('T')[0]; // Yalnızca tarih kısmını alır (yyyy-mm-dd)
+    const date = new Date(order.date).toISOString().split("T")[0]; // Yalnızca tarih kısmını alır (yyyy-mm-dd)
 
     // Eğer tarihe ait bir grup yoksa oluştur
     if (!groupedOrders[date]) {
@@ -20,7 +20,7 @@ function groupOrdersByDate(orderRecords) {
         orders: [order],
         totalOrders: 1,
         totalAmount: order.totalPrice,
-        totalCancelledAmount: order.isReady === 'Cancel' ? order.totalPrice : 0,
+        totalCancelledAmount: order.isReady === "Cancel" ? order.totalPrice : 0,
       };
     } else {
       // Eğer tarihe ait bir grup varsa mevcut gruba ekle
@@ -28,7 +28,7 @@ function groupOrdersByDate(orderRecords) {
       groupedOrders[date].totalOrders += 1;
       groupedOrders[date].totalAmount += order.totalPrice;
       groupedOrders[date].totalCancelledAmount +=
-        order.isReady === 'Cancel' ? order.totalPrice : 0;
+        order.isReady === "Cancel" ? order.totalPrice : 0;
     }
   });
 
@@ -45,7 +45,7 @@ function groupOrdersByDate(orderRecords) {
 }
 
 export const getCategories = createAsyncThunk(
-  '/getCategories',
+  "/getCategories",
   async (thunkAPI: any) => {
     try {
       return await productService.getCategoriesHelper();
@@ -62,7 +62,7 @@ export const getCategories = createAsyncThunk(
 );
 
 export const getAdminDashBoardInf = createAsyncThunk(
-  '/getAdminDashBoardInf',
+  "/getAdminDashBoardInf",
   async ({ query }: any, thunkAPI) => {
     try {
       return await productService.getAdminDashboardInf({ query });
@@ -78,12 +78,12 @@ export const getAdminDashBoardInf = createAsyncThunk(
   }
 );
 export const updateOrderStatus = createAsyncThunk(
-  '/updateOrderStatus',
+  "/updateOrderStatus",
   async ({ id, status }: any, thunkAPI) => {
     try {
-      console.log(id, 'id');
+      console.log(id, "id");
       const response = await productService.UpdateOrderStatus({ id, status });
-      successNotification('Sipariş Durumu Başarıyla Güncellendi');
+      successNotification("Sipariş Durumu Başarıyla Güncellendi");
       const t = { id, status };
       thunkAPI.dispatch(updateOrders(response)); // Remove 'await' from this line
       return response;
@@ -94,13 +94,12 @@ export const updateOrderStatus = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 export const createOrder = createAsyncThunk(
-  '/createOrder',
+  "/createOrder",
   async (
     {
       totalPrice,
@@ -129,10 +128,10 @@ export const createOrder = createAsyncThunk(
         isTakeAway,
         tip,
       });
-      successNotification('Order Başarıyla Oluştu');
+      successNotification("Order Başarıyla Oluştu");
       return {
         response,
-        status: '200',
+        status: "200",
       };
     } catch (error: any) {
       const message =
@@ -141,14 +140,13 @@ export const createOrder = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const createTip = createAsyncThunk(
-  '/asdasd',
+  "/asdasd",
   async ({ tip, id, seller }: any, thunkAPI) => {
     try {
       const response = await productService.createTip({
@@ -156,10 +154,9 @@ export const createTip = createAsyncThunk(
         id,
         seller,
       });
-      errorNotification('Tip başarıyla oluşturuldu');
       return {
         response,
-        status: '200',
+        status: "200",
       };
     } catch (error: any) {
       const message =
@@ -168,14 +165,13 @@ export const createTip = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const getOrderBySeller = createAsyncThunk(
-  '/getOrderBySeller',
+  "/getOrderBySeller",
   async (thunkAPI: any) => {
     try {
       return await productService.getOrderBySeller();
@@ -186,14 +182,13 @@ export const getOrderBySeller = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const deleteOrder = createAsyncThunk(
-  '/deleteOrder',
+  "/deleteOrder",
   async ({ id }: any, thunkAPI) => {
     try {
       const { data } = await productService.deleteOrder({ id });
@@ -205,14 +200,13 @@ export const deleteOrder = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const getOrderById = createAsyncThunk(
-  '/getOrderById',
+  "/getOrderById",
   async ({ id }: any, thunkAPI) => {
     try {
       const { data } = await productService.getOrderById({ id });
@@ -224,14 +218,13 @@ export const getOrderById = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const getCategoryById = createAsyncThunk(
-  '/getCategoryById',
+  "/getCategoryById",
   async ({ id }: any, thunkAPI) => {
     try {
       return await productService.getCategoryByIdHelper({ id });
@@ -242,17 +235,16 @@ export const getCategoryById = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const getProduct = createAsyncThunk(
-  '/getProduct',
+  "/getProduct",
   async ({ id }: any, thunkAPI) => {
     try {
-      console.log('id', id);
+      console.log("id", id);
       return await productService.getProduct({ id });
     } catch (error: any) {
       const message =
@@ -266,15 +258,15 @@ export const getProduct = createAsyncThunk(
   }
 );
 export const updateProductsImage = createAsyncThunk(
-  '/updateProductsImage',
+  "/updateProductsImage",
   async ({ id, formData }: any, thunkAPI) => {
     try {
-      console.log('id', id);
+      console.log("id", id);
       const response = await productService.updateProductsImage({
         id,
         formData,
       });
-      successNotification('Ürün Resmi Başarıyla Güncellendi');
+      successNotification("Ürün Resmi Başarıyla Güncellendi");
       return response;
     } catch (error: any) {
       const message =
@@ -289,11 +281,11 @@ export const updateProductsImage = createAsyncThunk(
 );
 
 export const deleteCategoryById = createAsyncThunk(
-  '/deleteCategoryById',
+  "/deleteCategoryById",
   async ({ id }: any, thunkAPI) => {
     try {
       await productService.deleteCategoryById({ id });
-      successNotification('Category Başarıyla Silindi');
+      successNotification("Category Başarıyla Silindi");
       return id;
     } catch (error: any) {
       const message =
@@ -302,19 +294,18 @@ export const deleteCategoryById = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const deleteProductById = createAsyncThunk(
-  '/deleteProductById',
+  "/deleteProductById",
   async ({ id, user }: any, thunkAPI) => {
     try {
-      console.log('id', id, user);
+      console.log("id", id, user);
       const response = await productService.deleteProductById({ id, user });
-      successNotification('Product Başarıyla Silindi');
+      successNotification("Product Başarıyla Silindi");
       return id;
     } catch (error: any) {
       const message =
@@ -323,14 +314,13 @@ export const deleteProductById = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const getCatsBySeller = createAsyncThunk(
-  '/getCatsBySeller',
+  "/getCatsBySeller",
   async (thunkAPI: any) => {
     try {
       const res = await productService.getCatsHelper();
@@ -347,7 +337,7 @@ export const getCatsBySeller = createAsyncThunk(
   }
 );
 
-export const getUsers = createAsyncThunk('/getUsers', async (thunkAPI: any) => {
+export const getUsers = createAsyncThunk("/getUsers", async (thunkAPI: any) => {
   try {
     const res = await productService.getUsersHelper();
     return res;
@@ -360,7 +350,7 @@ export const getUsers = createAsyncThunk('/getUsers', async (thunkAPI: any) => {
   }
 });
 export const getOfficer = createAsyncThunk(
-  '/getOfficer',
+  "/getOfficer",
   async (thunkAPI: any) => {
     try {
       const res = await productService.getOfficerHelper();
@@ -377,7 +367,7 @@ export const getOfficer = createAsyncThunk(
   }
 );
 export const deleteOfficer = createAsyncThunk(
-  '/deleteOfficer',
+  "/deleteOfficer",
   async (id: string, thunkAPI: any) => {
     try {
       const res = await productService.deleteOfficerHelper(id);
@@ -395,12 +385,12 @@ export const deleteOfficer = createAsyncThunk(
 );
 
 export const getCategoriesBySeller = createAsyncThunk(
-  '/getCategoriesBySeller',
+  "/getCategoriesBySeller",
   async (thunkAPI) => {
     try {
-      console.log('aşsdkjakldjaskljdklasj');
+      console.log("aşsdkjakldjaskljdklasj");
       const response = await productService.getCategoriesBySellerHelper();
-      console.log(response, 'response get categories');
+      console.log(response, "response get categories");
       return response;
     } catch (error: any) {
       const message =
@@ -414,9 +404,9 @@ export const getCategoriesBySeller = createAsyncThunk(
 );
 
 export const getCategoriesBySellerId = createAsyncThunk(
-  '/getCategoriesBySellerId',
+  "/getCategoriesBySellerId",
   async (id, thunkAPI) => {
-    console.log(id, 'id');
+    console.log(id, "id");
     try {
       const response = await productService.getCategoriesBySellerIdHelper(id);
       return response;
@@ -431,12 +421,12 @@ export const getCategoriesBySellerId = createAsyncThunk(
   }
 );
 export const addCategories = createAsyncThunk(
-  '/addCategories',
+  "/addCategories",
   async (category, thunkAPI) => {
     try {
       console.log(category);
       const v = await productService.addCategoriesHelper(category);
-      successNotification('Gategory Başarıyla Güncellendi');
+      successNotification("Gategory Başarıyla Güncellendi");
     } catch (error: any) {
       const message =
         (error.response &&
@@ -444,18 +434,17 @@ export const addCategories = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const updateCategory = createAsyncThunk(
-  '/updateCategory',
+  "/updateCategory",
   async ({ category, id }: any, thunkAPI) => {
     try {
       const res = await productService.updateCategory({ category, id });
-      successNotification('Category Başarıyla Güncellendi');
+      successNotification("Category Başarıyla Güncellendi");
       return res;
     } catch (error: any) {
       const message =
@@ -464,18 +453,17 @@ export const updateCategory = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const getProductsById = createAsyncThunk(
-  '/getProducts',
+  "/getProducts",
   async (id, thunkAPI) => {
     try {
       const response = await productService.getProductsByIdHelper(id);
-      console.log(response, 'response');
+      console.log(response, "response");
       return response;
     } catch (error: any) {
       const message =
@@ -484,14 +472,13 @@ export const getProductsById = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const getProductsBySeller = createAsyncThunk(
-  '/getProductsBySeller',
+  "/getProductsBySeller",
   async (id, thunkAPI) => {
     try {
       const res = await productService.getProductsBySeller(id);
@@ -509,9 +496,9 @@ export const getProductsBySeller = createAsyncThunk(
 );
 
 export const getProductsBySellerLimit = createAsyncThunk(
-  '/getProductsBySellerLimit',
+  "/getProductsBySellerLimit",
   async ({ skip = 0, limit = 99999 }: any, thunkAPI) => {
-    console.log(skip, 'skip');
+    console.log(skip, "skip");
     const v = skip == 1 ? 0 : skip * 10 - 10;
     try {
       const res = await productService.getProductsBySellerWithLimit({
@@ -526,14 +513,13 @@ export const getProductsBySellerLimit = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const getOrderBySellerWithLimit = createAsyncThunk(
-  '/getOrderBySellerWithLimit',
+  "/getOrderBySellerWithLimit",
   async ({ skip = 0, limit = 0, query }: any, thunkAPI) => {
     try {
       const res = await productService.getOrderBySellerWithLimit({
@@ -549,13 +535,12 @@ export const getOrderBySellerWithLimit = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 export const getOrderRecords = createAsyncThunk(
-  '/getOrderRecords',
+  "/getOrderRecords",
   async ({ query }: any, thunkAPI) => {
     try {
       const res = await productService.getOrderRecords({
@@ -569,13 +554,12 @@ export const getOrderRecords = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 export const getInvoicesRecords = createAsyncThunk(
-  '/getInvoicesRecords',
+  "/getInvoicesRecords",
   async ({ query }: any, thunkAPI) => {
     try {
       const res = await productService.getInvoicesRecords({
@@ -589,18 +573,17 @@ export const getInvoicesRecords = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 
 export const addProduct = createAsyncThunk(
-  '/addProduct',
+  "/addProduct",
   async ({ product, formData }: any, thunkAPI) => {
     try {
       const v = await productService.addProduct({ product, formData });
-      successNotification('Product başarıyla güncellendi');
+      successNotification("Product başarıyla güncellendi");
     } catch (error: any) {
       const message =
         (error.response &&
@@ -608,17 +591,16 @@ export const addProduct = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      errorNotification(error.response.data);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
 export const newAddProduct = createAsyncThunk(
-  '/newAddProduct',
+  "/newAddProduct",
   async ({ formData }: any, thunkAPI) => {
     try {
       const v = await productService.newAddProduct({ formData });
-      successNotification('Product başarıyla güncellendi');
+      successNotification("Product başarıyla güncellendi");
     } catch (error: any) {
       const message =
         (error.response &&
@@ -632,14 +614,14 @@ export const newAddProduct = createAsyncThunk(
 );
 
 export const updateProduct = createAsyncThunk(
-  '/updateProduct',
+  "/updateProduct",
   async ({ product, productId }: any, { thunkAPI }: any) => {
     try {
       const response = await productService.updateProduct({
         product,
         productId,
       });
-      successNotification('Product başarıyla güncellendi');
+      successNotification("Product başarıyla güncellendi");
     } catch (error: any) {
       const message =
         (error.response &&
@@ -653,14 +635,14 @@ export const updateProduct = createAsyncThunk(
   }
 );
 export const updateProductP = createAsyncThunk(
-  '/updateProduct',
+  "/updateProduct",
   async ({ product, productId }: any, { thunkAPI }: any) => {
     try {
       const response = await productService.updateProductP({
         product,
         productId,
       });
-      successNotification('Product başarıyla güncellendi');
+      successNotification("Product başarıyla güncellendi");
     } catch (error: any) {
       const message =
         (error.response &&
@@ -704,7 +686,7 @@ const initialState: InitialState = {
   isErrorP: false,
   isSuccessP: false,
   isLoadingP: false,
-  messageP: '',
+  messageP: "",
   products: [],
   orders: [],
   confirmedOrders: [],
@@ -722,24 +704,24 @@ const initialState: InitialState = {
 // Then, handle actions in your reducers:
 
 const productSlice = createSlice({
-  name: 'users',
+  name: "users",
   initialState,
   reducers: {
     addOrder(state: any, action: any) {
-      console.log('action', action.payload);
-      console.log('length', state.orders);
+      console.log("action", action.payload);
+      console.log("length", state.orders);
       const newOrders = [action.payload, ...state.orders];
       state.orders = newOrders;
-      console.log('length after', state.orders);
+      console.log("length after", state.orders);
     },
     updateProductIsActive(state: InitialState, action: any) {
       const product = action.payload;
-      console.log('product', product);
+      console.log("product", product);
       const newProducts = [...state.sellerProducts];
       const index: number = newProducts.findIndex(
         (i: any) => i._id === product._id
       );
-      console.log(index, 'index');
+      console.log(index, "index");
       newProducts[index].isActive = product.isActive;
       state.sellerProducts = [...newProducts];
     },
@@ -762,15 +744,15 @@ const productSlice = createSlice({
         //const deepCopyOrders = [...state.orders];
         //console.log(deepCopyOrders);
       }
-      console.log(state.orders, 'state.orders');
+      console.log(state.orders, "state.orders");
       const preparedOrders = state.orders.filter((order: any) => {
-        return order.isReady == 'InProgress';
+        return order.isReady == "InProgress";
       });
       const confirmedOrders = state.orders.filter((order: any) => {
-        return order.isReady == 'Not Approved';
+        return order.isReady == "Not Approved";
       });
       const readyOrders = state.orders.filter((order: any) => {
-        return order.isReady == 'Ready';
+        return order.isReady == "Ready";
       });
       state.preparedOrders = preparedOrders;
       state.confirmedOrders = confirmedOrders;
@@ -850,13 +832,13 @@ const productSlice = createSlice({
       .addCase(getOrderBySellerWithLimit.fulfilled, (state, action) => {
         const v = action.payload;
         const preparedOrders = v.filter((order: any) => {
-          return order.isReady == 'InProgress';
+          return order.isReady == "InProgress";
         });
         const confirmedOrders = v.filter((order: any) => {
-          return order.isReady == 'Not Approved';
+          return order.isReady == "Not Approved";
         });
         const readyOrders = v.filter((order: any) => {
-          return order.isReady == 'Ready';
+          return order.isReady == "Ready";
         });
         state.preparedOrders = preparedOrders;
         state.confirmedOrders = confirmedOrders;
@@ -1124,7 +1106,7 @@ const productSlice = createSlice({
         state.isLoadingP = false;
         state.isSuccessP = true;
         state.category = action.payload;
-        console.log(action.payload, 'action payload');
+        console.log(action.payload, "action payload");
       })
       .addCase(updateCategory.rejected, (state, action) => {
         state.isErrorP = true;
